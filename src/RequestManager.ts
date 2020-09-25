@@ -46,7 +46,8 @@ class RequestManager {
 
   public async request(requestObject: JSONRPCMessage, notification: boolean = false, timeout?: number): Promise<any> {
     const internalID = (++this.lastId).toString();
-    const id = notification ? null : internalID;
+    // the library casper-node used only supports uint64
+    const id = notification ? null : this.lastId;
     // naively grab first transport and use it
     const payload = {request: this.makeRequest(requestObject.method, requestObject.params || [], id) , internalID};
     if (this.batchStarted) {

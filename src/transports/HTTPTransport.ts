@@ -13,7 +13,7 @@ interface HTTPTransportOptions {
 class HTTPTransport extends Transport {
   public uri: string;
   private readonly credentials?: CredentialsOption;
-  private readonly headers: Headers
+  private readonly headers:Record<string, string>;
   constructor(uri: string, options?: HTTPTransportOptions) {
     super();
     this.uri = uri;
@@ -67,10 +67,10 @@ class HTTPTransport extends Transport {
     return (data.request.id === null || data.request.id === undefined);
   }
 
-  private static setupHeaders(headerOptions?: Record<string, string>): Headers {
-    const headers = new Headers(headerOptions)
+  private static setupHeaders(headerOptions?: Record<string, string>): Record<string, string>{
+    const headers = headerOptions || {};
+    headers['Content-Type'] = 'application/json';
     // Overwrite header options to ensure correct content type.
-    headers.set("Content-Type", "application/json")
     return headers
   }
 }
